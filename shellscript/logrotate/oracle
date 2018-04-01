@@ -1,0 +1,48 @@
+# *** 1: arquivos de log dos listeners e sqlnet:
+# faz rotacionamento mensal durante 1 ano, eliminando os logs mais velhos que esse periodo. Acrescenta data no nome das copias mensais e trunca arquivo de log original apos a copia. Nao manda email contendo arquivos expirados.
+/ORACLE_HOME/network/log/*.log {
+   monthly
+   rotate 12
+   copytruncate
+   notifempty
+   missingok
+   nomail
+   noolddir
+   dateext
+   dateformat _%Y%m%d_%s
+}
+
+# *** 2: arquivos de log das instancias de bd:
+# faz rotacionamento mensal durante 1 ano, eliminando os mais velhos que esse periodo. Acrescenta data no nome das copias mensais e trunca arquivo de log original apos a copia. Nao manda email dos arquivos expirados.
+/ORACLE_BASE/diag/rdbms/*/*/trace/*.log {
+   monthly
+   rotate 12
+   copytruncate
+   notifempty
+   missingok
+   noolddir
+   dateext
+   dateformat _%Y%m%d_%s
+}
+
+# *** 3: arquivos de traces das instancias de bd:
+# mensalmente elimina todos arquivos que forem mais velhos que 1 ano, sem gerar copias, renomeando os logs originais acrescentando incremento numerico
+/ORACLE_BASE/diag/rdbms/*/*/trace/*.tr? {
+   monthly
+   rotate 12
+   missingok
+   nocopy
+}
+
+# *** 4: arquivos de log diversos do EM:
+# idem "arquivos de log das instancias de bd"
+/ORACLE_HOME_EM/sysman/log/*.log {
+   monthly
+   rotate 12
+   copytruncate
+   notifempty
+   missingok
+   noolddir
+   dateext
+   dateformat _%Y%m%d_%s
+}
